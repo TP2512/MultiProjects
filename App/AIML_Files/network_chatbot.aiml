@@ -1,0 +1,21 @@
+<!-- AIML file for network management chatbot -->
+<aiml version="1.0" encoding="UTF-8">
+
+<!-- Define pattern and response for querying node status -->
+<category>
+    <pattern>GIVE ME THE STATUS OF NODE RESTID *</pattern>
+    <template>
+        <srai>QUERY NODE STATUS <star/></srai>
+    </template>
+</category>
+
+<!-- Define pattern and response for querying node status -->
+<category>
+    <pattern>QUERY NODE STATUS *</pattern>
+    <template>
+        <!-- Call Python function to query node status from NMS API -->
+        <think><python>get_node_status(<star index="1"/>)</python></think>
+    </template>
+</category>
+
+</aiml>

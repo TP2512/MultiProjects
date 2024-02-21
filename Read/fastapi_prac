@@ -1,0 +1,29 @@
+
+
+async def read_items(
+    item_id: Annotated[int, Path(title="The ID of the item to get")],
+    q: Annotated[str | None, Query(alias="item-query")] = None,
+):
+    results = {"item_id": item_id}
+    if q:
+        results.update({"q": q})
+    return results
+
+@app.post("/post/")
+async def post_item(item: Item):
+    return {"item": item}
+
+@app.put("/item/{item_id}")
+async def update_item(item_id: int , item: Item, q: Annotated[list | None, Query()] = None):
+    if q:
+        return {f"item id: {item_id} query para:  {q} item parse:{item}"}
+    return {f"item_id {item_id} data: {item}"}
+
+
+@app.post("/items/")
+async def post_items(item: Item):
+    item_dict = item.dict()
+    if item.tax:
+        price_plus_tax = item.tax + item.price
+        item_dict.update({"price_plus_tax":price_plus_tax})
+    return {"item": item_dict}

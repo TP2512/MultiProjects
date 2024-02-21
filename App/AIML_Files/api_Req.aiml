@@ -1,0 +1,16 @@
+<aiml version="1.0" encoding="UTF-8">
+
+<!-- Define pattern and response for getting number from user -->
+<category>
+    <pattern>GIVE ME THE STATUS OF NODE RESTID *</pattern>
+    <template>
+         please wait i am checking the status of node with id <set name="number"><star/></set>
+    </template>
+</category>
+<category>
+      <pattern>WHAT IS MY node id</pattern>
+      <template>
+         Your node id is <get name="number"/>.
+      </template>
+   </category>
+</aiml>

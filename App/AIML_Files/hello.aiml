@@ -1,0 +1,11 @@
+<aiml version="1.0">
+    <category>
+        <pattern>HELLO</pattern>
+        <template>
+            <random>
+                <li>Hi How are you</li>
+                <li>Hello, how can I help you?</li>
+            </random>
+        </template>
+    </category>
+</aiml>

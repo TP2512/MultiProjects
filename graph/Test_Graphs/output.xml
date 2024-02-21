@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<robot generator="Robot 7.0 (Python 3.11.3 on win32)" generated="2024-02-20T10:33:23.066521" rpa="false" schemaversion="5">
+<suite id="s1" name="Graph Test Using Robot" source="C:\Users\tpujari\Desktop\python_projects\Chatbot\graph\Test_Graphs\graph_test_using_robot.robot">
+<kw name="Connect To Mongodb" owner="keywords" type="SETUP">
+<kw name="Connect" owner="CustomLibrary">
+<msg time="2024-02-20T10:33:23.257900" level="INFO">Connection established to mongodb://localhost:27017</msg>
+<arg>${mongostring}</arg>
+<status status="PASS" start="2024-02-20T10:33:23.256909" elapsed="0.000991"/>
+</kw>
+<status status="PASS" start="2024-02-20T10:33:23.256909" elapsed="0.001990"/>
+</kw>
+<test id="s1-t1" name="Access All Collections From DB" line="14">
+<kw name="Use DB" owner="keywords">
+<kw name="Dbconnect" owner="CustomLibrary">
+<arg>${database}</arg>
+<status status="PASS" start="2024-02-20T10:33:23.260468" elapsed="0.005010"/>
+</kw>
+<arg>${database1}</arg>
+<status status="PASS" start="2024-02-20T10:33:23.260468" elapsed="0.006216"/>
+</kw>
+<kw name="Get All Collections In Database" owner="keywords">
+<kw name="Run Keyword And Return" owner="BuiltIn">
+<kw name="Get All Collections" owner="CustomLibrary">
+<status status="PASS" start="2024-02-20T10:33:23.267693" elapsed="0.015072"/>
+</kw>
+<msg time="2024-02-20T10:33:23.282765" level="INFO">Returning from the enclosing user keyword.</msg>
+<var>${Collections}</var>
+<arg>Get All Collections</arg>
+<doc>Runs the specified keyword and returns from the enclosing user keyword.</doc>
+<status status="PASS" start="2024-02-20T10:33:23.267693" elapsed="0.015072"/>
+</kw>
+<return>
+<value>${Collections}</value>
+<status status="NOT RUN" start="2024-02-20T10:33:23.282765" elapsed="0.000000"/>
+</return>
+<msg time="2024-02-20T10:33:23.282765" level="INFO">${collections} = ['edges', 'nodes']</msg>
+<var>${collections}</var>
+<status status="PASS" start="2024-02-20T10:33:23.266684" elapsed="0.016081"/>
+</kw>
+<kw name="Log" owner="BuiltIn">
+<msg time="2024-02-20T10:33:23.283742" level="INFO">['edges', 'nodes']</msg>
+<arg>${collections}</arg>
+<doc>Logs the given message with the given level.</doc>
+<status status="PASS" start="2024-02-20T10:33:23.283742" elapsed="0.000000"/>
+</kw>
+<kw name="Use DB" owner="keywords">
+<kw name="Dbconnect" owner="CustomLibrary">
+<arg>${database}</arg>
+<status status="PASS" start="2024-02-20T10:33:23.284741" elapsed="0.001021"/>
+</kw>
+<arg>${database2}</arg>
+<status status="PASS" start="2024-02-20T10:33:23.284741" elapsed="0.001021"/>
+</kw>
+<kw name="Get All Collections In Database" owner="keywords">
+<kw name="Run Keyword And Return" owner="BuiltIn">
+<kw name="Get All Collections" owner="CustomLibrary">
+<status status="PASS" start="2024-02-20T10:33:23.286979" elapsed="0.012222"/>
+</kw>
+<msg time="2024-02-20T10:33:23.299201" level="INFO">Returning from the enclosing user keyword.</msg>
+<var>${Collections}</var>
+<arg>Get All Collections</arg>
+<doc>Runs the specified keyword and returns from the enclosing user keyword.</doc>
+<status status="PASS" start="2024-02-20T10:33:23.286979" elapsed="0.012222"/>
+</kw>
+<return>
+<value>${Collections}</value>
+<status status="NOT RUN" start="2024-02-20T10:33:23.299201" elapsed="0.000000"/>
+</return>
+<msg time="2024-02-20T10:33:23.299201" level="INFO">${collections} = ['testcollection']</msg>
+<var>${collections}</var>
+<status status="PASS" start="2024-02-20T10:33:23.286979" elapsed="0.012222"/>
+</kw>
+<kw name="Log" owner="BuiltIn">
+<msg time="2024-02-20T10:33:23.300212" level="INFO">['testcollection']</msg>
+<arg>${collections}</arg>
+<doc>Logs the given message with the given level.</doc>
+<status status="PASS" start="2024-02-20T10:33:23.300212" elapsed="0.000000"/>
+</kw>
+<kw name="Close DB" owner="keywords" type="TEARDOWN">
+<kw name="Dbdisconnect" owner="CustomLibrary">
+<status status="PASS" start="2024-02-20T10:33:23.301197" elapsed="0.000000"/>
+</kw>
+<status status="PASS" start="2024-02-20T10:33:23.301197" elapsed="0.000000"/>
+</kw>
+<doc>Tests able to get collections from db.</doc>
+<status status="PASS" start="2024-02-20T10:33:23.258899" elapsed="0.043312"/>
+</test>
+<kw name="Close Mongodb Connection" owner="keywords" type="TEARDOWN">
+<kw name="Disconnect" owner="CustomLibrary">
+<msg time="2024-02-20T10:33:23.303196" level="INFO">Connection closed</msg>
+<status status="PASS" start="2024-02-20T10:33:23.303196" elapsed="0.000000"/>
+</kw>
+<status status="PASS" start="2024-02-20T10:33:23.303196" elapsed="0.000000"/>
+</kw>
+<doc>This is sample test execution for package</doc>
+<status status="PASS" start="2024-02-20T10:33:23.068522" elapsed="0.234674"/>
+</suite>
+<statistics>
+<total>
+<stat pass="1" fail="0" skip="0">All Tests</stat>
+</total>
+<tag>
+</tag>
+<suite>
+<stat pass="1" fail="0" skip="0" id="s1" name="Graph Test Using Robot">Graph Test Using Robot</stat>
+</suite>
+</statistics>
+<errors>
+</errors>
+</robot>

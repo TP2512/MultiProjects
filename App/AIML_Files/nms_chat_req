@@ -1,0 +1,14 @@
+1.status of alarms or node
+2.4g/5g/product nodes in nms
+
+
+
+Q:give me the status node restid 2?
+
+NLP:status node restid 2
+
+python:
+response=reqest.get(url=acpurl,paramter(id=2))
+resonse[status]
+
+A:your node is down due to management issue

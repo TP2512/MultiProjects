@@ -1,0 +1,41 @@
+aws configure: Configures the AWS CLI with your AWS Access Key ID, AWS Secret Access Key, default region, and default output format.
+
+aws s3: Commands for interacting with Amazon S3 (Simple Storage Service):
+
+aws s3 ls: List S3 buckets or objects.
+aws s3 cp: Copy files and directories to/from S3.
+aws s3 sync: Sync files and directories between your local machine and S3.
+aws ec2: Commands for managing Amazon EC2 (Elastic Compute Cloud) instances:
+
+aws ec2 describe-instances: Describe EC2 instances.
+aws ec2 run-instances: Launch EC2 instances.
+aws ec2 terminate-instances: Terminate EC2 instances.
+aws lambda: Commands for managing AWS Lambda functions:
+
+aws lambda list-functions: List Lambda functions.
+aws lambda create-function: Create a new Lambda function.
+aws lambda update-function-code: Update the code for an existing Lambda function.
+aws rds: Commands for managing Amazon RDS (Relational Database Service) instances:
+
+aws rds describe-db-instances: Describe RDS instances.
+aws rds create-db-instance: Create a new RDS instance.
+aws rds delete-db-instance: Delete an existing RDS instance.
+aws iam: Commands for managing IAM (Identity and Access Management) users, groups, roles, and policies:
+
+aws iam list-users: List IAM users.
+aws iam create-user: Create a new IAM user.
+aws iam delete-user: Delete an existing IAM user.
+aws cloudformation: Commands for managing AWS CloudFormation stacks and templates:
+
+aws cloudformation create-stack: Create a new CloudFormation stack.
+aws cloudformation describe-stacks: Describe CloudFormation stacks.
+aws cloudformation delete-stack: Delete an existing CloudFormation stack.
+aws ecs: Commands for managing Amazon ECS (Elastic Container Service) clusters and tasks:
+
+aws ecs list-clusters: List ECS clusters.
+aws ecs describe-services: Describe ECS services.
+aws ecs run-task: Run a new ECS task.
+These are just a few examples of commonly used AWS CLI commands. The AWS CLI provides a wide range of commands for interacting with various AWS services, so you can explore and use the commands that are relevant to your specific use case and requirements.
+
+
+

@@ -1,0 +1,51 @@
+Searching Algorithms:
+--> Linear Search
+--> Binary Search
+
+Sorting Algorithms:
+--> Bubble Sort
+--> Selection Sort
+--> Insertion Sort
+ Merge Sort  -->
+ Quick Sort  -->
+
+Graph Algorithms:
+--> Depth-First Search (DFS)
+--> Breadth-First Search (BFS)
+Dijkstra's Algorithm (Shortest Path) -->
+Bellman-Ford Algorithm (Shortest Path with Negative Weights)
+Floyd-Warshall Algorithm (All Shortest Paths)
+Minimum Spanning Tree Algorithms (e.g., Kruskal's Algorithm, Prim's Algorithm)
+
+Dynamic Programming:
+--> Fibonacci Sequence
+Longest Common Subsequence  -->
+Knapsack Problem
+
+Tree Algorithms:
+--> Tree Traversal (Pre-order, In-order, Post-order)
+--> Binary Search Tree (Insertion, Deletion, Searching)
+AVL Tree, Red-Black Tree (Balanced Binary Search Trees)
+
+String Algorithms:
+Pattern Matching (e.g., Naive String Matching, Rabin-Karp Algorithm, Knuth-Morris-Pratt Algorithm)
+Longest Common Substring -->
+Longest Palindromic Substring
+
+Greedy Algorithms:
+Activity Selection
+Huffman Coding
+Minimum Spanning Tree Algorithms (e.g., Prim's Algorithm)
+
+Backtracking Algorithms:
+N-Queens Problem
+Sudoku Solver
+
+Hashing:
+Hash Tables
+Hash Functions
+
+Miscellaneous:
+Topological Sorting
+Disjoint Set (Union-Find) Data Structure
+Bit Manipulation Techniques

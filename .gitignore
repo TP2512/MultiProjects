@@ -1,0 +1,8 @@
+venv/
+DataHandling/
+Jio/
+*.log
+*.csv
+*.xlsx
+*.zip
+*.pdf

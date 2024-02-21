@@ -1,0 +1,23 @@
+<aiml version="1.0">
+    <category>
+        <pattern>GET_WEATHER *</pattern>
+        <template>
+            <think>
+                <set name="city"><star/></set>
+            </think>
+            <srai>GET_WEATHER_CITY</srai>
+        </template>
+    </category>
+
+    <category>
+        <pattern>GET_WEATHER_CITY</pattern>
+        <template>
+            <think>
+                <set name="city"><get name="city"/></set>
+            </think>
+            <python>handle_weather(city)</python>
+        </template>
+    </category>
+
+
+</aiml>
