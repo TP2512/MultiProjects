@@ -1,0 +1,49 @@
+To use the memory profiler in your news aggregator code, you can follow these steps:
+
+Install the memory_profiler module if you haven't already:
+
+pip install memory_profiler
+Decorate the functions or methods that you want to profile with @profile. In your case, you might want to profile the parse_page method of your parsing strategies and the scrape method of your WebScrapper class.
+
+Here's how you can decorate the parse_page method in your DefaultParsingStrategy class:
+
+from memory_profiler import profile
+
+class DefaultParsingStrategy(ParsingStrategy):
+    @profile
+    def parse_page(self, html):
+        """This method is generator method which will give news at output one by one on call"""
+        page_data = BeautifulSoup(html, 'html.parser')
+        news_articles = page_data.find_all("div", class_="brief_box", attrs={"data-section_name": "/briefs"})
+        for news in news_articles:
+            data = {
+                "title_element": news.find("h2"),
+                "article_brief": news.find("p"),
+                "category": news.find("p").a['href'].split('/')[1]
+            }
+            yield data
+Similarly, you can decorate the scrape method in your WebScrapper class:
+
+python
+Copy code
+class WebScrapper:
+    @profile
+    def scrape(self):
+        html = self.fetch_page()
+        if html:
+            data = self._parsing_strategy.parse_page(html)
+            logger.info(f"Scraping completed successfully from {self.url}")
+            return data
+        else:
+            logger.error(f"Failed to fetch page or parse html or url:{self.url}")
+            return None
+Run your script with the memory profiler enabled. You can use the mprof command-line tool provided by memory_profiler to generate memory usage profiles.
+
+
+mprof run your_script.py
+After running your script, you can analyze the memory usage profile using the mprof command-line tool:
+
+mprof plot
+This will generate a memory usage plot that you can inspect to identify any memory usage patterns or issues in your code.
+
+By profiling the memory usage of specific functions or methods in your news aggregator code, you can gain insights into memory consumption and identify potential optimizations to improve performance and resource utilization.

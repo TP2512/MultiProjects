@@ -1,4 +1,4 @@
-"""Fetch the old content from MongoDB.
+r"""Fetch the old content from MongoDB.
 Fetch the new content from the web page.
 Compare the old and new content to identify the differences.
 Take action based on the differences (e.g., store the changed items in MongoDB, send notifications).
