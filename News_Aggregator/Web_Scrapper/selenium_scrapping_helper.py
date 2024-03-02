@@ -1,4 +1,3 @@
-import requests
 from bs4 import BeautifulSoup
 import asyncio
 import aiohttp
@@ -33,8 +32,10 @@ async def scrape_article_details(article_url):
 
 
 async def scrape_news_articles():
-    n_response = requests.get("https://indianexpress.com/latest-news/")
-    soup = BeautifulSoup(n_response.text, 'html.parser')
+    main_url = "https://indianexpress.com/latest-news/"
+    # html = requests.get("https://indianexpress.com/latest-news/").text
+    html = await fetch_page(main_url)
+    soup = BeautifulSoup(html, 'html.parser')
     all_divs = soup.find_all("div", class_="snaps")
     list_of_links = []
     for links in all_divs:

@@ -2,6 +2,7 @@ from News_Aggregator import logger
 # from memory_profiler import profile
 import requests
 from bs4 import BeautifulSoup
+import asyncio
 import aiohttp
 
 
@@ -18,8 +19,15 @@ class WebScrapper:
         except requests.RequestException as e:
             logger.error(f"Error while fetching page: {e}")
             return None
-        except aiohttp.ClientConnectorError as e:
-            logger.error("Internet Connection is broken")
+
+    # def fetch_page(self):
+    #     try:
+    #         response = requests.get(self.url)
+    #         response.raise_for_status()
+    #         return response.text
+    #     except requests.RequestException as e:
+    #         logger.error(f"Error while fetching page: {e}")
+    #         return None
 
     # @profile
     async def scrape(self):
@@ -48,8 +56,8 @@ class DefaultParsingStrategy(ParsingStrategy):
         news_articles = page_data.find_all("div", class_="brief_box", attrs={"data-section_name": "/briefs"})
         for news in news_articles:
             data = {
-                "title_element": news.find("h2").text,
-                "article_brief": news.find("p").text,
+                "title_element": news.find("h2"),
+                "article_brief": news.find("p"),
                 "category": news.find("p").a['href'].split('/')[1]
             }
             yield data
@@ -57,30 +65,12 @@ class DefaultParsingStrategy(ParsingStrategy):
 
 class IEParsingStrategy(ParsingStrategy):
     def parse_page(self, html):
-        soup = BeautifulSoup(html, 'html.parser')
-        try:
-            news_article = soup.find_all("div", class_="story_details")
-            paragraphs = news_article[0].find_all("p")
-            article = ""
-            for para in paragraphs:
-                article += para.text
-            data = {
-                "headline": soup.find("h1", itemprop='headline').text,
-                "description": soup.find("h2", itemprop='description').text,
-                "date": soup.find("span", itemprop='dateModified').text,
-                "article": article
-            }
-            yield data
-        except AttributeError:
-            logger.error("Failed to load article content")
-        except IndexError:
-            logger.error(f"Failed to load article content")
+        pass
 
 
 if __name__ == "__main__":
     import time
     start_time = time.time()
-
     # @profile
     def main():
         news_url = "https://timesofindia.indiatimes.com/briefs"
@@ -91,7 +81,7 @@ if __name__ == "__main__":
         for newss in news_article:
             title_element = newss.find("h2")
             article_brief = newss.find("p")
-            # category = article_brief.a['href'].split('/')[1]
+            category = article_brief.a['href'].split('/')[1]
             print("category: ", article_brief.a['href'].split('/')[1])
             print("title: ", title_element.text)
             print("full_content: ", article_brief.text)

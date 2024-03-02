@@ -1,24 +1,49 @@
+import requests
 from News_Aggregator import logger
+from bs4 import BeautifulSoup
 from News_Aggregator.Web_Scrapper import news_scrapper_main as nws
 import time
+import asyncio
+from pymongo import MongoClient
 
-start_time = time.time()
+
+def push_to_mongodb(data):
+    client = MongoClient("mongodb://localhost:27017/")
+    db = client["news_db"]
+    collection = db["news_collection"]
+    result = collection.insert_one(data)
+    print(f"Inserted news article with ID: {result.inserted_id}")
+
+
+async def scrape_and_push(url, parser=None):
+    try:
+        scrapper = nws.WebScrapper(url, parser)
+        news_articles = await scrapper.scrape()
+        print(url.split('.')[0].split('/')[-1], ":")
+        for article in news_articles:
+            # push_to_mongodb(article)
+            print(article)
+    except TypeError:
+        print(f"Internet connection is broken or url dont have any relative content {url}")
+        logger.error(f"Internet connection is broken or url dont have any relative content {url}")
 
 urls = [
-    ("https://timesofindia.indiatimes.com/briefs", nws.DefaultParsingStrategy()),
-    ("https://thewire.com", nws.WireParsingStrategy())
-]
+        ("https://timesofindia.indiatimes.com/briefs", nws.DefaultParsingStrategy()),
+    ]
 
-for url, parser in urls:
-    scraper = nws.WebScrapper(url, parser)
-    news_article = scraper.scrape()
-    if news_article:
-        for news in news_article:
-            print(news.get("article_brief").text)
-            print()
-    else:
-        logger.warning(f"no data scrapped from {url}")
 
+async def main():
+    await asyncio.gather(*[scrape_and_push(url, parser) for url, parser in urls])
+
+
+start_time = time.time()
+main_page = requests.get("https://indianexpress.com/latest-news/")
+soup = BeautifulSoup(main_page.text, 'html.parser')
+all_divs = soup.find_all("div", class_="snaps")
+for links in all_divs:
+    art_url = links.a['href']
+    urls.append((art_url, nws.IEParsingStrategy()))
+asyncio.run(main())
 end_time = time.time()
 execution_time = end_time - start_time
 print(f"Execution time: {execution_time} seconds")
