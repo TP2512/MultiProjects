@@ -1,0 +1,42 @@
+To perform caching in Python, especially for storing documents or data for a long time for processing, you can use various libraries such as cachetools, functools, or redis. Here's an example using the cachetools library:
+
+python code:
+
+from pymongo import MongoClient
+from cachetools import TTLCache
+import time
+
+# Connect to the MongoDB database
+client = MongoClient("mongodb://localhost:27017/")
+db = client["your_database_name"]
+collection = db["your_collection_name"]
+
+# Create a TTL cache with a maximum size and expiration time
+cache = TTLCache(maxsize=100, ttl=3600)  # Max size 100 documents, TTL 1 hour (3600 seconds)
+
+def get_document_from_cache_or_db(document_id):
+    # Check if the document is in the cache
+    if document_id in cache:
+        # If it is, return the cached document
+        return cache[document_id]
+
+    # If not, retrieve the document from the database
+    document = collection.find_one({"_id": document_id})
+
+    # Store the document in the cache
+    cache[document_id] = document
+
+    return document
+
+# Example usage
+document_id = "your_document_id"
+cached_document = get_document_from_cache_or_db(document_id)
+print(cached_document)
+In this example:
+
+We create a MongoDB client and connect to the desired database and collection.
+We create a TTLCache object with a maximum size (maxsize) and expiration time (ttl). This cache will hold up to 100 documents and each document will expire after 1 hour (3600 seconds).
+We define a function get_document_from_cache_or_db() that takes a document ID as input.
+Inside the function, we check if the document ID is in the cache. If it is, we return the cached document. If not, we retrieve the document from the database, store it in the cache, and return it.
+We demonstrate the usage of the function by retrieving a document with a specific ID.
+This way, documents are fetched from the cache if available, reducing the load on the database, and ensuring that frequently accessed documents are readily available.

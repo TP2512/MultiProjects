@@ -48,9 +48,10 @@ class DefaultParsingStrategy(ParsingStrategy):
         news_articles = page_data.find_all("div", class_="brief_box", attrs={"data-section_name": "/briefs"})
         for news in news_articles:
             data = {
-                "title_element": news.find("h2").text,
-                "article_brief": news.find("p").text,
-                "category": news.find("p").a['href'].split('/')[1]
+                "source": "TOI",
+                "title": news.find("h2").text,
+                "content": news.find("p").text,
+                # "category": news.find("p").a['href'].split('/')[1]
             }
             yield data
 
@@ -65,10 +66,11 @@ class IEParsingStrategy(ParsingStrategy):
             for para in paragraphs:
                 article += para.text
             data = {
-                "headline": soup.find("h1", itemprop='headline').text,
-                "description": soup.find("h2", itemprop='description').text,
-                "date": soup.find("span", itemprop='dateModified').text,
-                "article": article
+                "source": "IE",
+                "title": soup.find("h1", itemprop='headline').text,
+                # "description": soup.find("h2", itemprop='description').text,
+                # "date": soup.find("span", itemprop='dateModified').text,
+                "content": article
             }
             yield data
         except AttributeError:

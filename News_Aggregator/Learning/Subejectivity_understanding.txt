@@ -1,0 +1,9 @@
+In natural language processing, subjectivity refers to the extent to which a statement reflects someone's personal opinion, emotion, or judgment rather than factual information. A subjective statement expresses personal feelings, beliefs, or opinions and can vary based on individual perspectives.
+
+For example:
+
+"I love chocolate ice cream." (Subjective)
+"The capital of France is Paris." (Objective)
+In the sentiment analysis context, subjectivity is measured on a scale from 0.0 to 1.0, where 0.0 indicates a highly objective statement (fact-based or unbiased) and 1.0 indicates a highly subjective statement (opinionated or emotionally charged).
+
+So, in the example you provided, (0.5, 0.6) indicates a sentiment with moderate subjectivity. This means that the analyzed text contains some subjective elements or opinions, but it is not entirely subjective.
