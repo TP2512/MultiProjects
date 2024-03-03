@@ -11,7 +11,7 @@ db_handler = mc.MongoDBConnection("news_aggregator_db", "news_articles")
 
 
 def push_to_mongodb(data):
-    data.update({"created_date": datetime.now()})
+    data.update({"created_date": datetime.now(), "user": "webscraper"})
     data.update({"sentiment": get_sentiment(data["content"])})
     result = db_handler.collection.insert_one(data)
     print(f"Inserted news article with ID: {result.inserted_id}")

@@ -1,7 +1,7 @@
 import logging
 from fastapi import FastAPI, Response, status, HTTPException
 from pydantic import BaseModel
-from typing import Annotated,Optional
+from typing import Annotated, Optional
 from .database import engine
 from . import models
 
