@@ -2,7 +2,7 @@ import spacy
 nlp = spacy.load('en_core_web_sm')
 import pandas as pd
 from textblob import TextBlob
-from News_Aggregator.Database import mongodb_connection as mc
+from Web_Scrapper.Database import mongodb_connection as mc
 
 db_name = "news_articles"
 collection = "articles"
