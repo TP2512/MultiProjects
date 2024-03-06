@@ -1,10 +1,12 @@
 from fastapi import HTTPException, status, Depends, Response, APIRouter
 from bson import ObjectId
 from pymongo.errors import DuplicateKeyError
-from ..database.database_connection import get_database
+from database.database_connection import get_database
 from motor.motor_asyncio import AsyncIOMotorDatabase
 from typing import List
-from ..models import schema as sc
+from models import schema as sc
+from utils import utils as utl
+
 
 router = APIRouter()
 
@@ -17,6 +19,8 @@ async def create_user(user: sc.UserCreate, db: AsyncIOMotorDatabase = Depends(ge
     if user_exists:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Email Already Exists")
     user_dict = user.dict()
+    hashed_password = utl.get_hashed_password(user_dict["password"])
+    user_dict["password"] = hashed_password
     result = await db["UserBase"].insert_one(user_dict)
     # return {"id": str(result.inserted_id)}
     return sc.UserResponse(id=str(result.inserted_id), username=user.username, email=user.email,

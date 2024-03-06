@@ -1,0 +1,7 @@
+--> I have removed __about__ from bcrypt.py file to tackle below issue
+ File "C:\Users\tpujari\Desktop\python_projects\Chatbot\venv\Lib\site-packages\passlib\handlers\bcrypt.py", line 620, in _load_backend_mixin
+    version = _bcrypt.__about__.__version__
+              ^^^^^^^^^^^^^^^^^
+AttributeError: module 'bcrypt' has no attribute '__about__'
+---------------------------------------------------------------------------------
+

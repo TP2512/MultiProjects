@@ -6,6 +6,10 @@ from database.database_connection import get_database
 from motor.motor_asyncio import AsyncIOMotorDatabase
 from typing import List
 from datetime import datetime
+# from passlib.context import CryptContext
+from utils import utils
+
+# pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 
 # Pydantic model for user data
@@ -68,6 +72,9 @@ async def create_user(user: UserCreate, db: AsyncIOMotorDatabase = Depends(get_d
     if user_exists:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Email Already Exists")
     user_dict = user.dict()
+    hashed_password = utils.get_hashed_password(user_dict["password"])
+    # hashed_password = pwd_context.hash(user_dict["password"])
+    user_dict["password"] = hashed_password
     result = await db["UserBase"].insert_one(user_dict)
     # return {"id": str(result.inserted_id)}
     return UserResponse(id=str(result.inserted_id), username=user.username, email=user.email,
