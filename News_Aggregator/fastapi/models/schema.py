@@ -1,7 +1,6 @@
-from pydantic import BaseModel, field_validator, EmailStr, constr
+from pydantic import BaseModel, field_validator, EmailStr
 from typing import Optional
 from datetime import datetime
-from News_Aggregator.fastapi.database import database_connection as dc
 
 
 class NewsFeed(BaseModel):
@@ -34,30 +33,45 @@ class NewsResponse(BaseModel):
     sentiment: SentimentAnalysis
 
 
-class UserCreate(BaseModel):
-    username: constr(regex=r'^[a-zA-Z0-9]*[!@#$%^&*()_+=\-[\]{};:\'"<>?,./\\|`~]*[a-zA-Z0-9]*$')
+class UserBase(BaseModel):
+    username: str
     email: EmailStr
     password: str
-    created_date: datetime.now()
+    created_date: datetime = datetime.now()
 
+    # noinspection PyMethodParameters
     @field_validator('username')
-    def username_check(cls, v):
+    def validate_username(cls, v):
+        if not any(char.isalnum() for char in v):
+            raise ValueError('Username must contain at least one alphanumeric character')
+        if not any(char.isascii() and not char.isalnum() for char in v):
+            raise ValueError('Username must contain at least one special character')
         if len(v) < 8:
-            raise ValueError("username must be atleast 8 chars")
+            raise ValueError('Username must be at least 8 characters long')
         return v
 
-    @field_validator('email')
-    def check_email_exists(cls, v):
-        db = dc.get_database()
-        existing_user = db["users"].find_one({"email": v})
-        if existing_user:
-            raise ValueError("Email Already exists")
+    @field_validator('password')
+    def validate_password(cls, v, **kwargs):
+        if not v:
+            raise ValueError('Password cannot be Null')
+        if not any(char.isascii() and not char.isalnum() for char in v):
+            raise ValueError('password must contain at least one special character')
+        if len(v) < 8:
+            raise ValueError('password must be at least 8 characters long')
+        if v == kwargs.get("username"):
+            raise ValueError("Password cannot be the same as username")
+        return v
 
 
-class UserOut(BaseModel):
-    id: int
+class UserCreate(UserBase):
+    pass
+
+
+class UserResponse(BaseModel):
+    id: str
+    username: str
     email: EmailStr
-    created_at: datetime
+    created_date: datetime
 
 
 class UserLogin(BaseModel):

@@ -1,0 +1,72 @@
+To create metadata for your Pydantic model and check for changes every time you run your application with uvicorn, you can leverage Python's built-in capabilities for working with files and metadata. Here's a basic approach to achieve this:
+
+Serialize the Pydantic model metadata to a JSON file.
+When your application starts, check if the serialized metadata file exists.
+If the file exists, compare the current metadata with the stored metadata.
+If there are differences, run your script to update the MongoDB collection with the new validation rules.
+Here's an example implementation:
+
+python
+Copy code
+import json
+from pydantic.main import BaseModel
+from pydantic.schema import schema
+
+
+class MyModel(BaseModel):
+    name: str
+    age: int
+
+
+def create_model_metadata():
+    # Generate schema metadata for the Pydantic model
+    model_schema = schema([MyModel])
+
+    # Serialize the metadata to a JSON file
+    with open("model_metadata.json", "w") as f:
+        json.dump(model_schema, f)
+
+    print("Model metadata created successfully.")
+
+
+def check_model_metadata_changes():
+    # Load the previously stored metadata
+    with open("model_metadata.json", "r") as f:
+        stored_metadata = json.load(f)
+
+    # Generate the current metadata for the Pydantic model
+    current_metadata = schema([MyModel])
+
+    # Compare the stored metadata with the current metadata
+    if stored_metadata != current_metadata:
+        print("Model metadata has changed. Updating MongoDB collection...")
+        # Run your script to update the MongoDB collection with the new validation rules
+        update_mongodb_collection()
+
+
+def update_mongodb_collection():
+    # Your code to update the MongoDB collection with new validation rules goes here
+    pass
+
+
+if __name__ == "__main__":
+    # Check if the model metadata file exists
+    try:
+        with open("model_metadata.json", "r") as f:
+            metadata_exists = True
+    except FileNotFoundError:
+        metadata_exists = False
+
+    if not metadata_exists:
+        create_model_metadata()
+    else:
+        check_model_metadata_changes()
+
+    # Run your FastAPI application using uvicorn
+    # uvicorn.main.run("main:app", reload=True)
+In this example:
+
+The create_model_metadata function generates schema metadata for the MyModel Pydantic model and saves it to a JSON file.
+The check_model_metadata_changes function compares the stored metadata with the current metadata every time the application starts. If there are differences, it triggers an update of the MongoDB collection.
+The update_mongodb_collection function (placeholder) is where you would place the code to update your MongoDB collection with the new validation rules.
+You can integrate this code into your application's startup process to ensure that the MongoDB collection stays in sync with any changes to your Pydantic model.

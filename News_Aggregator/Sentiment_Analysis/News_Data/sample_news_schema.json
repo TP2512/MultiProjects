@@ -1,0 +1,6 @@
+{
+  "title": "Sample News Article",
+  "content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit...",
+  "created_at": new Date(),
+  "sentiment": "neutral"
+}
