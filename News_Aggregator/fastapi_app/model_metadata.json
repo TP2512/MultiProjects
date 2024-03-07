@@ -1,0 +1,1 @@
+{"properties": {"username": {"title": "Username", "type": "string"}, "email": {"format": "email", "title": "Email", "type": "string"}, "password": {"title": "Password", "type": "string"}}, "required": ["username", "email", "password"], "title": "User", "type": "object"}
