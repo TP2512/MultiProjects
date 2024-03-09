@@ -1,6 +1,14 @@
 from pydantic import BaseModel, field_validator, EmailStr
-from typing import Optional
+from typing import Optional, Text
 from datetime import datetime
+
+
+class NewsInput(BaseModel):
+    news_article: Text
+
+
+class NewsResponse(BaseModel):
+    sentiment: str
 
 
 class NewsFeed(BaseModel):
@@ -22,17 +30,6 @@ class NewsFeed(BaseModel):
         if not any(values.values()):
             raise ValueError("'At least one input field (title, news, created_date) must be provided")
         return values
-
-
-class SentimentAnalysis(BaseModel):
-    polarity: float
-    subjectivity: float
-
-
-class NewsResponse(BaseModel):
-    id: int
-    title: Optional[str]
-    sentiment: SentimentAnalysis
 
 
 # Pydantic model for user data

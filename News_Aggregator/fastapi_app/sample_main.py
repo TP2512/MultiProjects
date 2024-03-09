@@ -4,16 +4,21 @@ from pydantic import BaseModel, EmailStr, field_validator
 from pymongo.errors import DuplicateKeyError
 from database.database_connection import get_database
 from motor.motor_asyncio import AsyncIOMotorDatabase
-from typing import List, Optional
+from typing import List, Optional, Text
 from datetime import datetime
 # from passlib.context import CryptContext
 from utils import utils, oauth2
 # handle InvalidId
 # pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 from fastapi.security.oauth2 import OAuth2PasswordRequestForm
+from services import get_sentiment as gs
 
 
 # Pydantic model for user data
+class NewsInput(BaseModel):
+    news_article: Text
+
+
 class UserBase(BaseModel):
     username: str
     email: EmailStr
@@ -176,3 +181,13 @@ async def login_user(user_credential: OAuth2PasswordRequestForm = Depends(),
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Invalid credentials")
     access_token = oauth2.create_access_token(data={"user_id": str(user["_id"])})
     return {"access_token": access_token, "token_type": "Bearer"}
+
+
+@app.post("/get_sentiment_from_news", status_code=status.HTTP_200_OK)
+async def get_sentiment_from_news(news: NewsInput, current_user: dict = Depends(oauth2.get_current_user)):
+    try:
+        senti_getter = gs.SentimentAnalysis(news.news_article)
+        senti_of_news = senti_getter.get_sentiment_from_app()
+        return {"sentiment of the news": senti_of_news}
+    except Exception as e:
+        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e))

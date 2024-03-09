@@ -1,9 +1,18 @@
-import re
-import nltk
 import pandas as pd
 from pattern.text.en import sentiment
 import spacy
 nlp = spacy.load('en_core_web_sm')
+
+
+# Define a function to categorize polarity into sentiment labels
+def get_sentiment_label(polarity):
+    if polarity >= positive_threshold:
+        return "Positive"
+    elif polarity <= -positive_threshold:
+        return "Negative"
+    else:
+        return "Neutral"
+
 
 # Read news articles from file
 with open("sample_article.txt", 'r') as f:
@@ -28,38 +37,16 @@ for s in sentences:
 # Create a DataFrame with sentiment analysis results
 df_textblob = pd.DataFrame(pattern_sentiments, columns=['Sentences', 'Polarity', 'Subjectivity'])
 
-# Calculate average polarity and subjectivity for each news article
-df_textblob = df_textblob[['Polarity', 'Subjectivity']].mean()
-print(df_textblob)
-# Merge sentiment analysis results with original DataFrame containing news articles
-# Assuming you have a DataFrame named 'news_df' containing news articles
-# news_df = pd.DataFrame({'News': sentences})  # Sample DataFrame, replace with your actual DataFrame
-# news_with_sentiment = pd.concat([news_df, avg_sentiment[['Polarity', 'Subjectivity']]], axis=1)
-#
-# # Save the DataFrame to CSV
-# news_with_sentiment.to_csv("sample_news_with_sentiment.csv", index=False)
-
-# import pandas as pd
-
-# Load the DataFrame containing sentiment analysis results
-# df_textblob = pd.read_csv("sample_news_sentiment.csv")
+# Calculate average polarity news article
+polarity = df_textblob['Polarity'].mean()
+print(polarity)
 
 # Define threshold values for polarity
 neutral_threshold = 0.2
 positive_threshold = 0.2
 
-# Define a function to categorize polarity into sentiment labels
-def get_sentiment_label(polarity):
-    if polarity >= positive_threshold:
-        return "Positive"
-    elif polarity <= -positive_threshold:
-        return "Negative"
-    else:
-        return "Neutral"
-
 # Apply the function to create a new column for sentiment labels
-df_textblob["Sentiment"] = df_textblob["Polarity"].apply(get_sentiment_label)
+sentiment = get_sentiment_label(polarity)
 
 # Display the DataFrame with the new sentiment column
-print(df_textblob.head())
-
+print(sentiment)
