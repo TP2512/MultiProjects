@@ -1,0 +1,35 @@
+for /f "delims=" %i in ('dir /b /ad') do @echo %i
+
+To Check the Python path to ensure that the directory containing the 'main' module is included. You can print the Python path from the command line using the following command:
+
+cmd
+python -c "import sys; print(sys.path)"
+
+To add a directory to the Python path, you have a few options:
+
+Temporary Solution Using sys.path.append():
+You can temporarily modify the Python path within your script using the sys.path.append() function. This is useful for testing or when you need to add a directory dynamically. Here's how you can do it:
+
+python
+Copy code
+import sys
+sys.path.append("/path/to/your/project")
+Replace "/path/to/your/project" with the actual path to the directory containing your 'main' module.
+
+Permanent Solution Using PYTHONPATH Environment Variable:
+You can set the PYTHONPATH environment variable to include the directory containing your 'main' module. This will permanently add the directory to the Python path, making it accessible from any Python script or command prompt. Here's how you can do it:
+
+On Windows:
+cmd
+Copy code
+set PYTHONPATH=%PYTHONPATH%;C:\path\to\your\project
+On Unix/Linux/Mac:
+bash
+Copy code
+export PYTHONPATH=$PYTHONPATH:/path/to/your/project
+Replace "/path/to/your/project" with the actual path to the directory containing your 'main' module.
+
+Use a Virtual Environment:
+If you're working within a virtual environment, ensure that the directory containing your 'main' module is within the virtual environment's directory structure. When you activate the virtual environment, the Python interpreter automatically includes the virtual environment's site-packages directory in the Python path.
+
+Choose the option that best fits your use case. If you need to permanently add the directory to the Python path, using the PYTHONPATH environment variable is recommended. Otherwise, if you only need to modify the path temporarily for testing purposes, you can use sys.path.append().

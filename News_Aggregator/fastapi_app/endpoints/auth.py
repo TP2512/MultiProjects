@@ -8,7 +8,7 @@ from fastapi.security.oauth2 import OAuth2PasswordRequestForm
 router = APIRouter(tags=['Authentication'])
 
 
-@router.post("/login")
+@router.post("/login", status_code=status.HTTP_200_OK)
 async def login_user(user_credential: OAuth2PasswordRequestForm = Depends(),
                      db: AsyncIOMotorDatabase = Depends(dc.get_database)):
     collection = db["UserBase"]
@@ -21,8 +21,8 @@ async def login_user(user_credential: OAuth2PasswordRequestForm = Depends(),
     else:
         user = None
     if not user:
-        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Invalid credentials")
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid credentials")
     if not utils.verify(user_credential.password, user["password"]):
-        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Invalid credentials")
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid credentials")
     access_token = oauth2.create_access_token(data={"user_id": str(user["_id"])})
     return {"access_token": access_token, "token_type": "Bearer"}

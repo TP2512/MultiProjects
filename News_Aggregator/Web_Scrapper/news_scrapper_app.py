@@ -4,7 +4,7 @@ from bs4 import BeautifulSoup
 from News_Aggregator.Web_Scrapper import news_scrapper_main as nws
 import time
 import asyncio
-from Database import mongodb_connection as mc
+from database import mongodb_connection as mc
 from datetime import datetime
 from services import get_sentiment as sg
 
