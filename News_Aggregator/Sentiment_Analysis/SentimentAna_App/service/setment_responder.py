@@ -40,7 +40,7 @@ class NewsAnalysis:
         df_textblob = pd.DataFrame(textblob_sentiments, columns=['Sentences', 'Polarity', 'Subjectivity'])
 
         polarity = df_textblob['Polarity'].mean()
-        print(polarity)
+        # print(polarity)
         # Apply the function to create a new column for sentiment labels
         sentiment = self.get_sentiment_label(polarity)
 
