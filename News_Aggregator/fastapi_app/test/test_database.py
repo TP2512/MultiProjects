@@ -5,7 +5,7 @@ from pymongo import errors
 
 # Check database connection
 @pytest.mark.asyncio
-async def test_get_database(mocker):
+async def test_get_database():
     # Call the get_database function
     db = await dc.get_database()
     # Assertions
@@ -38,7 +38,7 @@ async def test_duplicate_data():
     test_db = await dc.get_database()
     try:
         await test_db["UserBase"].insert_one(data)
-    except errors.DuplicateKeyError as e:
+    except errors.DuplicateKeyError:
         assert True
     # assert result["username"] == "John_251293"
 
@@ -62,9 +62,10 @@ async def test_update_data():
 async def test_delete_data():
     test_db = await dc.get_database()
     # Prepare data for deletion
-    criteria = {"email": "john@example.com"}
+    criteria = {"username" : "John_251293"}
     # Delete data from the database
     await test_db["UserBase"].delete_one(criteria)
     # Verify that the data has been deleted
     result = await test_db["UserBase"].find_one(criteria)
     assert result is None
+
