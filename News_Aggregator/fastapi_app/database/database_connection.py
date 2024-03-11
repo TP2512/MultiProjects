@@ -1,4 +1,7 @@
 from motor.motor_asyncio import AsyncIOMotorClient, AsyncIOMotorDatabase
+from pymongo.errors import ServerSelectionTimeoutError
+from fastapi import HTTPException, status
+
 
 # MongoDB configuration
 MONGODB_URL = "mongodb://localhost:27017"
@@ -7,6 +10,18 @@ DATABASE_NAME = "news_aggregator_db"
 
 # Dependency to get MongoDB database instance
 async def get_database() -> AsyncIOMotorDatabase:
-    client = AsyncIOMotorClient(MONGODB_URL)
-    db = client[DATABASE_NAME]
-    return db
+    try:
+        client = AsyncIOMotorClient(MONGODB_URL, serverSelectionTimeoutMS=2000)
+        db = client[DATABASE_NAME]
+        await client.server_info()  # Test connection
+        return db
+    except ServerSelectionTimeoutError:
+        raise HTTPException(status_code=status.HTTP_503_SERVICE_UNAVAILABLE, detail="Database Unavailable")
+
+    # client = AsyncIOMotorClient(MONGODB_URL)
+    # db = client[DATABASE_NAME]
+    # return db
+
+if __name__ == '__main__':
+    import asyncio
+    asyncio.run(get_database())
