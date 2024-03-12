@@ -1,5 +1,5 @@
 import unittest
-from sample_mock import len_joke, get_joke
+from sample_mock import len_joke, get_joke, add_numbers
 from unittest.mock import patch, MagicMock
 
 
@@ -18,4 +18,9 @@ class TestJoke(unittest.TestCase):
         mock_response.status_code = 200
         mock_response.json.return_value = {'value': {'jokes': 'one'}}
         self.assertEqual(get_joke(), 'one')
+
+    @patch("sample_mock.get_numbers")
+    def test_add_numbers(self, mock_get_numbers):
+        mock_get_numbers.return_value = [2, 3]
+        self.assertEqual(add_numbers(), 5)
 

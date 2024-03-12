@@ -12,3 +12,18 @@ def get_joke():
         return response.json()['value']['jokes']
     else:
         return "No Jokes"
+
+
+def get_numbers():
+    a = int(input("1 st number"))
+    b = int(input("2 nd number"))
+    return [a, b]
+
+
+def add_numbers():
+    a, b = get_numbers()
+    return a + b
+
+
+if __name__ == "__main__":
+    add_numbers()

@@ -1,7 +1,6 @@
 import pytest
 from fastapi.testclient import TestClient
 from main import app
-import warnings
 
 
 @pytest.fixture(scope="module")
@@ -18,4 +17,3 @@ def test_read_main(test_app):
     response = test_app.get("/")
     assert response.status_code == 200
     assert response.json() == {"message": "Not Authorised"}
-
