@@ -6,7 +6,10 @@ from fastapi.security import OAuth2PasswordBearer
 from database.database_connection import get_database
 from motor.motor_asyncio import AsyncIOMotorDatabase
 from bson import ObjectId
+from loggers import configure_logger
 
+
+logger = configure_logger()
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="login")
 
@@ -28,6 +31,7 @@ def verify_access_token(token: str, credentials_exception):
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
         id: str = payload.get("user_id")
         if id is None:
+            logger.error("user id missing")
             raise credentials_exception
         token_data = sc.TokenData(id=id)
     except JWTError:
@@ -36,10 +40,12 @@ def verify_access_token(token: str, credentials_exception):
 
 
 async def get_current_user(token: str = Depends(oauth2_scheme), db: AsyncIOMotorDatabase = Depends(get_database)):
+    logger.error("getting current user failed")
     credentials_exception = HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail=f"could not validate credentials",
                                           headers={"WWW-Authenticate": "Bearer"})
     token = verify_access_token(token, credentials_exception)
     user_data = await db["UserBase"].find_one({"_id": ObjectId(token.id)}, {"password": 0})
     if not user_data:
+        logger.error("token invalid")
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Token Invalid")
     return user_data

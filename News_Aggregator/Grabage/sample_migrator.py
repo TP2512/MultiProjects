@@ -1,6 +1,5 @@
 from pymongo import MongoClient
-from pymongo.errors import CollectionInvalid
-from sample_main import User
+from dev_code.sample_main import User
 
 
 # MongoDB connection settings
