@@ -62,10 +62,9 @@ async def test_update_data():
 async def test_delete_data():
     test_db = await dc.get_database()
     # Prepare data for deletion
-    criteria = {"username" : "John_251293"}
+    criteria = {"username": "John_251293"}
     # Delete data from the database
     await test_db["UserBase"].delete_one(criteria)
     # Verify that the data has been deleted
     result = await test_db["UserBase"].find_one(criteria)
     assert result is None
-

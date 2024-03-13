@@ -1,0 +1,46 @@
+import pytest
+from fastapi import HTTPException, status
+from bson import ObjectId
+from unittest.mock import AsyncMock
+from app import get_user
+
+@pytest.mark.asyncio
+async def test_get_user():
+    # Mock the database collection
+    mock_collection = AsyncMock()
+
+    # Configure the mock to return mock user data
+    mock_user_data = {
+        "_id": ObjectId("dummy_id"),
+        "username": "test_user",
+        "email": "test@example.com",
+        "created_date": "2024-03-15"
+    }
+    mock_collection.find_one.return_value = mock_user_data
+
+    # Mock the database itself
+    mock_db = AsyncMock()
+    mock_db.__getitem__.return_value = mock_collection
+
+    # Mock the current user
+    mock_current_user = {"_id": ObjectId("dummy_id")}
+
+    # Call the function with mock dependencies
+    response = await get_user("dummy_id", db=mock_db, current_user=mock_current_user)
+
+    # Assert that the response matches the expected user data
+    assert response["id"] == "dummy_id"
+    assert response["username"] == "test_user"
+    assert response["email"] == "test@example.com"
+    assert response["created_date"] == "2024-03-15"
+
+    # Test unauthorized user
+    with pytest.raises(HTTPException) as exc_info:
+        await get_user("other_id", db=mock_db, current_user=mock_current_user)
+    assert exc_info.value.status_code == status.HTTP_403_FORBIDDEN
+
+    # Test user not found
+    mock_collection.find_one.return_value = None
+    with pytest.raises(HTTPException) as exc_info:
+        await get_user("dummy_id", db=mock_db, current_user=mock_current_user)
+    assert exc_info.value.status_code == status.HTTP_404_NOT_FOUND

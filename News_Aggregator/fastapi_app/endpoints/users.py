@@ -24,8 +24,8 @@ async def create_user(user: sc.UserCreate, db: AsyncIOMotorDatabase = Depends(ge
     hashed_password = utils.get_hashed_password(user_dict["password"])
     user_dict["password"] = hashed_password
     result = await db["UserBase"].insert_one(user_dict)
-    return sc.UserResponse(id=str(result.inserted_id), username=user.username, email=user.email,
-                        created_date=user_dict["created_date"])
+    return sc.UserResponse(id=str(result.inserted_id), username=user.username,
+                           email=user.email, created_date=user_dict["created_date"])
 
 
 # Get All Users
@@ -37,8 +37,8 @@ async def get_user(db: AsyncIOMotorDatabase = Depends(get_database),
                             detail="Not authorised to perform requested action")
     users = []
     async for user_data in db["UserBase"].find():
-        user_response = sc.UserResponse(id=str(user_data["_id"]), username=user_data["username"], email=user_data["email"],
-                                     created_date=user_data["created_date"])
+        user_response = sc.UserResponse(id=str(user_data["_id"]), username=user_data["username"],
+                                        email=user_data["email"], created_date=user_data["created_date"])
         users.append(user_response)
     return users
 
@@ -53,8 +53,8 @@ async def get_user(user_id: str, db: AsyncIOMotorDatabase = Depends(get_database
     user_data = await db["UserBase"].find_one({"_id": ObjectId(user_id)})
     if user_data:
         user_data["id"] = str(user_data["_id"])
-        return sc.UserResponse(id=str(user_data["id"]), username=user_data["username"], email=user_data["email"],
-                            created_date=user_data["created_date"])
+        return sc.UserResponse(id=str(user_data["id"]), username=user_data["username"],
+                               email=user_data["email"], created_date=user_data["created_date"])
     raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User Not Found")
 
 
