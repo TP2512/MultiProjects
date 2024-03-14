@@ -1,15 +1,12 @@
 from endpoints import users, auth, news
 from fastapi import FastAPI
-# import logging
-import os
-from datetime import datetime
 from loggers import configure_logger
 
 
 # Configure logging
 logger = configure_logger()
 app = FastAPI()
-
+logger.error("Web Application Started")
 app.include_router(users.router)
 app.include_router(auth.router)
 app.include_router(news.router)

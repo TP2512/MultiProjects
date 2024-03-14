@@ -14,7 +14,7 @@ def configure_logger():
     os.makedirs(logs_dir, exist_ok=True)
 
     # Create log file with current date
-    log_file_name = f"{logs_dir}/web_app_{datetime.now().strftime('%Y-%m-%d')}.log"
+    log_file_name = f"{logs_dir}/test_web_app_{datetime.now().strftime('%Y-%m-%d')}.log"
 
     # Create file handler
     file_handler = logging.FileHandler(log_file_name)

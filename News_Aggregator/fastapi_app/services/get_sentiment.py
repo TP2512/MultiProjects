@@ -1,5 +1,8 @@
 import requests as rq
-from fastapi import HTTPException, status
+from loggers import configure_logger
+
+
+logger = configure_logger()
 
 
 class SAError(Exception):
@@ -19,6 +22,8 @@ class SentimentAnalysis:
             if response.status_code == 200:
                 return response.json()
             else:
+                logger.error(f"sentiment analysis app {response.status_code} ")
                 raise SAError("Bad Request to Sentiment Web Server")
         except Exception as e:
+            logger.error(f"Sentiment analysis app facing issue {e}")
             return e

@@ -19,7 +19,7 @@ async def login_user(user_credential: OAuth2PasswordRequestForm = Depends(),
         user_by_email = await collection.find_one({"email": user_credential.username})
         user_by_username = await collection.find_one({"username": user_credential.username})
     except pymongo.errors.ConnectionFailure:
-        logger.error(f"database connection problem")
+        logger.critical(f"database connection problem")
         raise HTTPException(status_code=status.HTTP_503_SERVICE_UNAVAILABLE, detail="Database unavailable")
 
     if user_by_email is not None:

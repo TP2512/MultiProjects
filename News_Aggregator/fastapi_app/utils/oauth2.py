@@ -10,7 +10,6 @@ from loggers import configure_logger
 
 
 logger = configure_logger()
-
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="login")
 
 SECRET_KEY = "09d25e094faa6ca2556c818166b7a9563b93f7099f6f0f4caa6cf63b88e8d3e7"
@@ -31,16 +30,16 @@ def verify_access_token(token: str, credentials_exception):
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
         id: str = payload.get("user_id")
         if id is None:
-            logger.error("user id missing")
+            logger.error("token is missing")
             raise credentials_exception
         token_data = sc.TokenData(id=id)
     except JWTError:
+        logger.error("getting current user failed due to token or other parameter")
         raise credentials_exception
     return token_data
 
 
 async def get_current_user(token: str = Depends(oauth2_scheme), db: AsyncIOMotorDatabase = Depends(get_database)):
-    logger.error("getting current user failed")
     credentials_exception = HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail=f"could not validate credentials",
                                           headers={"WWW-Authenticate": "Bearer"})
     token = verify_access_token(token, credentials_exception)
