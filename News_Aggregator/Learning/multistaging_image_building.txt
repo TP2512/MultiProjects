@@ -1,0 +1,42 @@
+Multi-stage building is a feature in Docker that allows you to use multiple build stages in a single Dockerfile. Each stage can execute commands and produce artifacts, and you can selectively copy artifacts from one stage to another. This allows you to separate the build environment from the runtime environment and produce smaller and more efficient Docker images.
+
+Here's how multi-stage building works and how it helps reduce the size of the final image:
+
+Multiple Stages: In a multi-stage Dockerfile, you define multiple stages, each with its own set of instructions. These stages can be named and referenced using the FROM directive.
+
+Build Stage: Typically, the first stage in a multi-stage build is the build stage. In this stage, you can install dependencies, compile code, and perform other build tasks necessary to create your application artifacts.
+
+Runtime Stage: The subsequent stages in the Dockerfile are usually the runtime stages. These stages can be based on lightweight base images, such as Alpine Linux or Slim variants of official images, to reduce the size of the final image.
+
+Copying Artifacts: Once the build stage completes its tasks, you can use the COPY directive to selectively copy only the necessary artifacts, such as compiled binaries or static files, from the build stage to the runtime stage. This ensures that the final image only contains the essential components needed to run the application.
+
+Discarding Unnecessary Artifacts: After copying the artifacts, you can optionally discard or remove any unnecessary files or dependencies from the runtime stage to further reduce the size of the final image.
+
+By using multi-stage builds, you can achieve smaller and more efficient Docker images by separating the build environment from the runtime environment and including only the necessary artifacts in the final image. This helps reduce the image size and improves overall performance and resource utilization when running containers.
+
+--> sample dockerfile with multi staging:
+
+# Stage 1: Build stage
+FROM python:3.11-slim AS builder
+
+WORKDIR /code
+
+COPY requirements.txt .
+
+# Install dependencies
+RUN pip install --upgrade pip && \
+    pip install --no-cache-dir -r requirements.txt
+
+# Stage 2: Production stage
+FROM python:3.11-slim
+
+ENV PYTHONUNBUFFERED 1
+
+WORKDIR /code
+
+COPY --from=builder /usr/local/lib/python3.11/site-packages /usr/local/lib/python3.11/site-packages
+COPY . .
+
+EXPOSE 8000
+
+CMD ["uvicorn", "code.fastapi_app.main:app", "--host", "0.0.0.0", "--port", "8000"]

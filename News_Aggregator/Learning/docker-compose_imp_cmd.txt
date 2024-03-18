@@ -1,0 +1,85 @@
+docker-compose -d up
+docker-compose down
+docker-compose logs
+docker volume ls
+docker-compose restart
+docker ps -a   #all running container
+docker images
+git remote -v
+docker volume inspect fastapi_app_mongodb_data
+docker volume create mongodb_data
+docker logs 70b17388f2d9
+docker-compose restart mongodb  #to restart specific service
+docker rmi 626665a73690
+docker run -d --env-file .env --network host -p 8000:8000 626665a73690
+docker build -t newssentimentapiapp:17032024.1 .
+----------------------
+
+kubectl apply -f deployment.yml
+kubectl get deployments
+kubectl get services
+kubectl delete -f deployment.yml
+kubectl delete service api-service
+
+---------------------------------------
+docker login
+docker tag fastapi_app-api:latest tarkesh2512/sentimentanalysisfastapi:latest
+docker push tarkesh2512/sentimentanalysisfastapi
+--------------------------------
+
+(venv) C:\Users\tpujari\Desktop\python_projects\Chatbot\News_Aggregator\fastapi_app>kubectl get services
+NAME          TYPE           CLUSTER-IP    EXTERNAL-IP   PORT(S)          AGE
+api-service   LoadBalancer   10.99.73.23   <pending>     8000:32691/TCP   45s
+kubernetes    ClusterIP      10.96.0.1     <none>        443/TCP          3d19h
+
+(venv) C:\Users\tpujari\Desktop\python_projects\Chatbot\News_Aggregator\fastapi_app>kubectl get deployments
+NAME                 READY   UP-TO-DATE   AVAILABLE   AGE
+api-deployment       0/1     1            0           48s
+mongodb-deployment   0/1     1            0           48s
+
+------------------------------------------------------------------------
+minikube service api-service --url
+kubectl create secret generic my-secret --from-env-file=.env
+-->Verify that the Secret has been created successfully:
+        kubectl get secrets my-secret
+---------------------------------------------------------
+kubectl delete secret my-secret
+kubectl get pods
+NAME                                  READY   STATUS    RESTARTS   AGE
+api-deployment-57858b98c5-hmflx       1/1     Running   0          25m
+mongodb-deployment-77d998cf56-ltcnb   1/1     Running   0          25m
+
+kubectl logs api-deployment-57858b98c5-hmflx
+
+kubectl delete pod api-deployment-57858b98c5-hmflx
+pod "api-deployment-57858b98c5-hmflx" deleted
+
+(venv) C:\Users\tpujari\Desktop\python_projects\Chatbot\News_Aggregator\fastapi_app>kubectl get pods
+NAME                                  READY   STATUS    RESTARTS   AGE
+api-deployment-57858b98c5-zjw5d       1/1     Running   0          7s
+mongodb-deployment-77d998cf56-ltcnb   1/1     Running   0          26m
+
+kubectl get svc
+NAME              TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)          AGE
+api-service       NodePort    10.99.75.108     <none>        8000:30288/TCP   31m
+kubernetes        ClusterIP   10.96.0.1        <none>        443/TCP          3d22h
+mongodb-service   ClusterIP   10.100.102.195   <none>        27017/TCP        31m
+
+kubectl delete pod mongodb-deployment-77d998cf56-ltcnb
+pod "mongodb-deployment-77d998cf56-ltcnb" deleted
+
+(venv) C:\Users\tpujari\Desktop\python_projects\Chatbot\News_Aggregator\fastapi_app>kubectl get nodes
+NAME       STATUS   ROLES           AGE     VERSION
+minikube   Ready    control-plane   3d22h   v1.28.3
+
+(venv) C:\Users\tpujari\Desktop\python_projects\Chatbot\News_Aggregator\fastapi_app>kubectl get nodes -o wide
+NAME       STATUS   ROLES           AGE     VERSION   INTERNAL-IP    EXTERNAL-IP   OS-IMAGE             KERNEL-VERSION                       CONTAINER-RUNTIME
+minikube   Ready    control-plane   3d22h   v1.28.3   192.168.49.2   <none>        Ubuntu 22.04.3 LTS   5.15.133.1-microsoft-standard-WSL2   docker://24.0.7
+
+(venv) C:\Users\tpujari\Desktop\python_projects\Chatbot\News_Aggregator\fastapi_app>kubectl edit deployment
+Edit cancelled, no changes made.
+
+(venv) C:\Users\tpujari\Desktop\python_projects\Chatbot\News_Aggregator\fastapi_app>kubectl edit svc
+service/api-service edited
+service/kubernetes skipped
+service/mongodb-service skipped

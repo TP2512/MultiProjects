@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<robot generator="Robot 7.0 (Python 3.11.3 on win32)" generated="2024-03-16T15:09:56.867073" rpa="false" schemaversion="5">
+<suite id="s1" name="Use Key" source="C:\Users\tpujari\Desktop\python_projects\Chatbot\News_Aggregator\Test_App\use_key.robot">
+<test id="s1-t1" name="Example Test" line="5">
+<kw name="Example Keyword" owner="test_key">
+<arg>value1</arg>
+<arg>value2</arg>
+<doc>This is an example keyword.</doc>
+<status status="PASS" start="2024-03-16T15:09:56.910593" elapsed="0.000000"/>
+</kw>
+<status status="PASS" start="2024-03-16T15:09:56.909589" elapsed="0.002002"/>
+</test>
+<status status="PASS" start="2024-03-16T15:09:56.870069" elapsed="0.042521"/>
+</suite>
+<statistics>
+<total>
+<stat pass="1" fail="0" skip="0">All Tests</stat>
+</total>
+<tag>
+</tag>
+<suite>
+<stat pass="1" fail="0" skip="0" id="s1" name="Use Key">Use Key</stat>
+</suite>
+</statistics>
+<errors>
+</errors>
+</robot>

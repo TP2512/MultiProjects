@@ -1,0 +1,2 @@
+write docker file
+build docker image -- docker build -t newssentimentapi:14032024 .

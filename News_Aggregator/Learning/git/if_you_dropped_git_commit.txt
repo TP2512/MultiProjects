@@ -1,0 +1,14 @@
+if you accidently dropped any commit.do not add or delete any thing after that it will make revert difficult as new changes are there in code.
+steps to recovere:
+1.Get the hash from reflog
+git reflog
+result:
+a4fa948 (HEAD -> dev) HEAD@{0}: rebase (finish): returning to refs/heads/dev
+a4fa948 (HEAD -> dev) HEAD@{1}: rebase (start): checkout a4fa948fb993d07673c58728a1046946b4c28328
+1e196bb (origin/dev) HEAD@{2}: rebase (finish): returning to refs/heads/dev
+1e196bb (origin/dev) HEAD@{3}: rebase (start): checkout 1e196bb21d63afe520d3e91b4c849f4175ef1667
+fc40e74 HEAD@{4}: commit: added logging to main app
+--in above case my commit hash was fc40e74
+
+2.revert the changes
+git reset --hard fc40e74
